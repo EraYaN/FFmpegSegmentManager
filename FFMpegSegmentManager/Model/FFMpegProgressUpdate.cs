@@ -1,6 +1,4 @@
-﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace FFMpegSegmentManager.Model
 {
@@ -79,7 +77,7 @@ namespace FFMpegSegmentManager.Model
 
             if (lines.ContainsKey("speed"))
             {
-                
+
                 double.TryParse(lines["speed"].Replace('x', '0'), out _speed);
             }
 

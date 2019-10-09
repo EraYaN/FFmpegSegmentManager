@@ -1,12 +1,9 @@
-﻿using FFMpegSegmentManager;
-using FFMpegSegmentManager.Model;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using FFMpegSegmentManager;
+using FFMpegSegmentManager.Model;
 
 namespace FFMpegTesting
 {
@@ -27,14 +24,15 @@ namespace FFMpegTesting
 
             progressLines = new Dictionary<string, string>();
             sstore = new SegmentStore(storeDirectory, segmentExtension, 100000000); //100MB max cache size.
-            
+
             // request comes in for seek position 300.5 seconds with profile 10Mbit.
             Job job = new Job("MAIN", sourceFile, tempDirectory, segmentExtension, 300.5, 10000000);
             job.SegmentReady += Job_SegmentReady;
 
             job.Run();
 
-            Console.CancelKeyPress += delegate (object sender, ConsoleCancelEventArgs e) {
+            Console.CancelKeyPress += delegate (object sender, ConsoleCancelEventArgs e)
+            {
                 e.Cancel = true;
                 Console.WriteLine("Gracefully quitting ffmpeg process...");
                 if (!job.IsComplete)
@@ -66,7 +64,8 @@ namespace FFMpegTesting
             Console.WriteLine("Created segment {0} for timestamps {1:F2} to {2:F2} for a length of {3:F2} with hash {4:X16}", e.SegmentFileName, e.StartTime, e.EndTime, e.EndTime - e.StartTime, hash);
             //first parameter is essentially a hash of the input variables.
             sstore.Store(hash, e.SegmentFileName, startTime, endTime);
-            Console.WriteLine("Current cache size {0:F1} MB", sstore.CacheSize/1e6);
-        }        
+            Console.WriteLine("Current cache size {0:F1} MB", sstore.CacheSize / 1e6);
+        }
     }
 }
+

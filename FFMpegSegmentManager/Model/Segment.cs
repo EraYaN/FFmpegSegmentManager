@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System;
 
 namespace FFMpegSegmentManager.Model
 {
@@ -10,6 +8,5 @@ namespace FFMpegSegmentManager.Model
         public ulong StartTime { get; set; }
         public ulong EndTime { get; set; }
         public DateTime? LastAccessed { get; set; }
-        public DateTime Added { get; set; }
     }
 }

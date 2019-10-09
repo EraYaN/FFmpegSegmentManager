@@ -1,9 +1,9 @@
-﻿using FFMpegSegmentManager.Exceptions;
-using FFMpegSegmentManager.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using FFMpegSegmentManager.Exceptions;
+using FFMpegSegmentManager.Model;
 
 namespace FFMpegSegmentManager
 {
@@ -13,7 +13,7 @@ namespace FFMpegSegmentManager
         long _currentSize = 0;
         DirectoryInfo _basePath;
         string _segmentExtension;
-        Dictionary<ulong,Segment> _segments;
+        Dictionary<ulong, Segment> _segments;
 
         public long CacheSize => _currentSize;
 
@@ -25,13 +25,13 @@ namespace FFMpegSegmentManager
             _segments = new Dictionary<ulong, Segment>();
             if (!_basePath.Exists)
             {
-                throw new ArgumentException("Given path does not exist.",nameof(BasePath));
+                throw new ArgumentException("Given path does not exist.", nameof(BasePath));
             }
         }
 
         public void Clear()
         {
-            foreach(var seg in _segments)
+            foreach (var seg in _segments)
             {
                 Remove(seg.Key);
             }
@@ -59,13 +59,13 @@ namespace FFMpegSegmentManager
                 if (File.Exists(internalFilename))
                     File.Delete(internalFilename);
                 File.Move(SegmentPath, internalFilename);
-                _segments.Add(Id, new Segment() { Id = Id, StartTime = StartTime, EndTime = EndTime, Added = DateTime.Now});
-                
+                _segments.Add(Id, new Segment() { Id = Id, StartTime = StartTime, EndTime = EndTime, Added = DateTime.Now });
+
                 _currentSize += length;
                 while (_currentSize > _maxSize)
                 {
-                    var removalKey = _segments.OrderBy(x => x.Value.LastAccessed).ThenBy(x=>x.Value.Added).Select(x=>x.Key).First(); 
-                    Console.WriteLine("Removing oldest segment {0:X16} because new cache size of {1:F1} MB is larger than the limit {2:F1} MB...",removalKey, _currentSize/1e6, _maxSize/1e6);
+                    var removalKey = _segments.OrderBy(x => x.Value.LastAccessed).ThenBy(x => x.Value.Added).Select(x => x.Key).First();
+                    Console.WriteLine("Removing oldest segment {0:X16} because new cache size of {1:F1} MB is larger than the limit {2:F1} MB...", removalKey, _currentSize / 1e6, _maxSize / 1e6);
                     Remove(removalKey);
                 }
             }
@@ -77,7 +77,8 @@ namespace FFMpegSegmentManager
             {
                 _segments[Id].LastAccessed = DateTime.Now;
                 return new FileInfo(CreateInternalFilename(Id));
-            } else
+            }
+            else
             {
                 throw new SegmentNotFoundException();
             }

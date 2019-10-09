@@ -1,6 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 namespace FFMpegSegmentManager.Encoders.Video
@@ -23,7 +20,7 @@ namespace FFMpegSegmentManager.Encoders.Video
             {
                 builder.AppendFormat(" -b:v {0}", VideoBandwidth);
             }
-            return string.Format(base_arguments, builder.ToString());            
+            return string.Format(base_arguments, builder.ToString());
         }
 
     }
